@@ -1,0 +1,26 @@
+- name: "Download wordpress"
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /var/www
+    remote_src: yes
+
+- name: "Create website directory"
+  file:
+    state: directory
+    path: /var/www/blog
+
+- name: "Copy site config"
+  copy:
+    src: files/blog.conf
+    dest: /etc/httpd/conf.d/blog.conf
+
+- name: "Copy wp config"
+  template:
+    src: files/wp-config.php
+    dest: /var/www/wordpress/wp-config.php
+
+- name: "Start httpd service"
+  systemd:
+    name: httpd
+    enabled: yes
+    state: restarted

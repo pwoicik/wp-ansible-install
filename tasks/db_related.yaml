@@ -1,0 +1,17 @@
+- name: "Start mariadb service"
+  systemd:
+    name: mariadb
+    enabled: yes
+    state: started
+
+- name: "Create database"
+  mysql_db:
+    name: "{{DB_NAME}}"
+    state: "present"
+
+- name: "Create user"
+  mysql_user:
+    name: "{{DB_USER}}"
+    password: "{{DB_PWD}}"
+    priv: "{{DB_NAME}}.*:ALL"
+    state: present
